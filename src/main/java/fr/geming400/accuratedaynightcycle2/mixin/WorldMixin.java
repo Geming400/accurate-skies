@@ -15,7 +15,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Mixin(World.class)
-public abstract class WorldMixin {
+abstract class WorldMixin {
     @Unique
     private static final int TICKS_BEFORE_COMPUTER = 20;
 
