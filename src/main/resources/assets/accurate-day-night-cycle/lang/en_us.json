@@ -1,0 +1,22 @@
+{
+  "text.config.adnc-config.option.useGeolocalisation": "Use Geo Localisation",
+  "text.config.adnc-config.option.useGeolocalisation.tooltip": "If Geo Localisation should get used.\nUse \"/acdn enable_geolocalisation\" to enable it, or restart your game",
+
+  "text.config.adnc-config.option.gmtTimeZone": "GMT Timezone",
+  "text.config.adnc-config.option.gmtTimeZone.tooltip": "The GMT Timezone. Leave to \"auto\" to use your system's timezone. Can be +1, -1, ...",
+
+  "text.config.adnc-config.option.accurateCelestialBodies": "Accurate Celestial Bodies",
+  "text.config.adnc-config.option.accurateCelestialBodies.tooltip": "If the sun and the moon are accurate on the clients.\nTHIS WILL SEND THE SERVER'S LOCATION TO THE CLIENTS !",
+
+
+  "commands.acdn.clickHere": "[HERE]",
+  "commands.acdn.updateDb.error.notEnabled": "Geo Localisation is not enabled. You can enable it by clicking %s",
+  "commands.acdn.updateDb.success": "Update db and user's Geolocalisation !\nOld Geo Localisation:\n- Latitude: %s\n- Longitude: %s\nNew Geo Localisation\n- Latitude: %s\n- Longitude: %s",
+  "commands.acdn.enableGeolocalisation.error.alreadyEnabled": "Geolocalisation is already enabled. You can disable it by clicking %s",
+  "commands.acdn.enableGeolocalisation.confirm": "Do you want to enable Geo Localisation ? Note:\n- IP Geo Localisation is done on your device\n- Your IP gets fetched through 'https://api.ipify.org'\n\nTo confirm, click %s",
+  "commands.acdn.enableGeolocalisation.confirm.updatingDb": "Updating db...",
+  "commands.acdn.enableGeolocalisation.confirm.success": "Successfully enabled Geo Localisation !",
+
+  "commands.acdn.disableGeolocalisation.error.alreadyDisabled": "Geo Localisation is already disabled.",
+  "commands.acdn.disableGeolocalisation.success": "Geo Localisation successfully disabled !"
+}
