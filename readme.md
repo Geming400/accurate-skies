@@ -5,6 +5,10 @@ This simple mod turns the overworld's sky into a more one.
 > [!IMPORTANT]
 > This mod will turn Minecraft's default day-night cycle into a 24 hours cycle
 
+> [!WARNING]
+> This mod won't work with most shaders, or even any.
+> Some will be more compatible than other (like [Bliss Shaders](https://modrinth.com/shader/bliss-shader))
+
 There are 2 modes:
 - System time
 - Geo localisation
