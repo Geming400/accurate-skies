@@ -12,12 +12,14 @@ import java.time.ZoneOffset;
 @SuppressWarnings("unused")
 public class ModConfigModel {
     @Hook
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean useGeolocalisation = false;
 
-    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @Hook
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean accurateCelestialBodies = false;
 
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("checkTimezone")
     public String gmtTimeZone = "auto";
 
