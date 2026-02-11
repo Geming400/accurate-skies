@@ -74,8 +74,8 @@ public class IpUtils {
 
         public static Geolocation of(CityResponse cityResponse) {
             return new Geolocation(
-                    cityResponse.getLocation().getLatitude(),
-                    cityResponse.getLocation().getLongitude()
+                    cityResponse.location().latitude(),
+                    cityResponse.location().longitude()
             );
         }
 
