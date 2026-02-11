@@ -1,4 +1,5 @@
 {
+  "text.config.adnc-config.title": "Accurate skies",
   "text.config.adnc-config.option.useGeolocalisation": "Use Geo Localisation",
   "text.config.adnc-config.option.useGeolocalisation.tooltip": "If Geo Localisation should get used.\nUse \"/acdn enable_geolocalisation\" to enable it, or restart your game",
 
