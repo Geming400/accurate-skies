@@ -11,19 +11,20 @@ import java.time.ZoneOffset;
 @Config(name = "adnc-config", wrapperName = "ModConfig")
 @SuppressWarnings("unused")
 public class ModConfigModel {
-    public static final String IP_ADDRESS_UNSET = "DO NOT MODIFY - NOT SET";
-
-
-    // public boolean useGeolocalisation = false; // TODO: Remove that on publish
-    public boolean useGeolocalisation = true;
-    @PredicateConstraint("checkTimezone")
-    public String gmtTimeZone = "auto";
+    public boolean useGeolocalisation = false;
     @PredicateConstraint("checkIfGeolocalisationEnabled")
+
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @Hook
     public boolean accurateCelestialBodies = true;
 
+    @PredicateConstraint("checkTimezone")
+    public String gmtTimeZone = "auto";
+
+    // Internal stuff
+
     @ExcludeFromScreen
-    public String ipAddress = IP_ADDRESS_UNSET;
+    public String ipAddress = AccurateDayNightCycle.IP_ADDRESS_UNSET;
 
     @ExcludeFromScreen
     public double latitude = 0;
@@ -43,6 +44,10 @@ public class ModConfigModel {
     }
 
     public static boolean checkIfGeolocalisationEnabled(boolean accurateCelestialBodies) {
-        return AccurateDayNightCycle.CONFIG.useGeolocalisation();
+        //noinspection ConstantValue
+        if (AccurateDayNightCycle.CONFIG == null)
+            return true;
+        else
+            return AccurateDayNightCycle.CONFIG.useGeolocalisation();
     }
 }

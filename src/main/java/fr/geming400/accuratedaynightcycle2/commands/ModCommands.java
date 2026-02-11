@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
-import fr.geming400.accuratedaynightcycle2.config.ModConfigModel;
 import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
@@ -13,8 +12,6 @@ import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.util.Objects;
 
 public final class ModCommands {
     private ModCommands() {}
@@ -33,7 +30,7 @@ public final class ModCommands {
         } else {
             AccurateDayNightCycle.CONFIG.useGeolocalisation(false);
             if (removeData) {
-                AccurateDayNightCycle.CONFIG.ipAddress(ModConfigModel.IP_ADDRESS_UNSET);
+                AccurateDayNightCycle.CONFIG.ipAddress(AccurateDayNightCycle.IP_ADDRESS_UNSET);
                 AccurateDayNightCycle.CONFIG.latitude(0);
                 AccurateDayNightCycle.CONFIG.longitude(0);
             }
@@ -71,20 +68,19 @@ public final class ModCommands {
         return Command.SINGLE_SUCCESS;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int updateDb(CommandContext<ServerCommandSource> context) {
         if (AccurateDayNightCycle.CONFIG.useGeolocalisation()) {
             context.getSource().sendMessage(Text.translatable("commands.acdn.enableGeolocalisation.confirm.updatingDb").formatted(Formatting.ITALIC, Formatting.GRAY));
 
-            IpUtils.Geolocation oldGeolocation = IpUtils.Geolocation.fromConfig();
-            // We are sure that it won't be null, so it will never throw
-            IpUtils.Geolocation newGeolocation = Objects.requireNonNull(AccurateDayNightCycle.loadOrCreateDb(true));
+            // It will throw in case something weird happened
+            IpUtils.Geolocation geolocation = AccurateDayNightCycle.loadOrCreateDb(true);
+            if (geolocation == null) {
+                AccurateDayNightCycle.LOGGER.error("Got an error while trying to update DB with command '/adnc update_db'");
+                return Command.SINGLE_SUCCESS;
+            }
 
-            context.getSource().sendFeedback(
-                    () -> Text.translatable("commands.acdn.updateDb.success",
-                            oldGeolocation.latitude(), oldGeolocation.longitude(),
-                            newGeolocation.latitude(), newGeolocation.longitude()
-                    ),
-                    true);
+            context.getSource().sendFeedback(() -> Text.translatable("commands.acdn.updateDb.success"), true);
         } else {
             context.getSource().sendError(
                     Text.translatable("commands.acdn.updateDb.error.notEnabled", getClickHereText("/adnc enable_geolocalisation"))
