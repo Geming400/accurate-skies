@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "accurate-day-night-cycle",
 	"version": "${version}",
-	"name": "Accurate Day Night Cycle",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Accurate Skies",
+	"description": "Makes Minecraft's sky more accurate",
 	"authors": ["Geming400"],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -15,6 +15,9 @@
 	"entrypoints": {
 		"main": [
 			"fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle"
+		],
+		"client": [
+			"fr.geming400.accuratedaynightcycle2.AccurateDayNightCycleClient"
 		]
 	},
 	"mixins": [
