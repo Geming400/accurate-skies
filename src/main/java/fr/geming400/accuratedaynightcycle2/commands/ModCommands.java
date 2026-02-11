@@ -98,6 +98,7 @@ public final class ModCommands {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
                 dispatcher
                         .register(CommandManager.literal("adnc")
+                                .requires(source -> source.hasPermissionLevel(2))
                                 .then(CommandManager.literal("update_db").executes(ModCommands::updateDb))
                                 .then(CommandManager.literal("enable_geolocalisation").executes(ModCommands::enableGeolocation)
                                         .then(CommandManager.literal("confirm").executes(ModCommands::enableGeolocationConfirm))
