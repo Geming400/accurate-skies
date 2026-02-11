@@ -4,6 +4,14 @@ import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
+import fr.geming400.accuratedaynightcycle2.networking.GiveGeolocalisationS2CPayload;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +54,24 @@ public class IpUtils {
     }
 
     public record Geolocation(double latitude, double longitude) {
+        public static final PacketCodec<PacketByteBuf, Geolocation> PACKET_CODEC = PacketCodec.tuple(
+                PacketCodecs.DOUBLE, Geolocation::latitude,
+                PacketCodecs.DOUBLE, Geolocation::longitude,
+                Geolocation::new
+        );
+
+        public void updatePlayerGeolocation(ServerPlayerEntity player) {
+            ServerPlayNetworking.send(player, new GiveGeolocalisationS2CPayload(
+                    new GiveGeolocalisationS2CPayload.Data(this, AccurateDayNightCycle.getTime().getZone()))
+            );
+        }
+
+        public void updatePlayersGeolocation(MinecraftServer server) {
+            for (ServerPlayerEntity player : PlayerLookup.all(server)) {
+                this.updatePlayerGeolocation(player);
+            }
+        }
+
         public static Geolocation of(CityResponse cityResponse) {
             return new Geolocation(
                     cityResponse.getLocation().getLatitude(),

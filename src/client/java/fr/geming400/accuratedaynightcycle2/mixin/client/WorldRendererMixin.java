@@ -1,6 +1,8 @@
 package fr.geming400.accuratedaynightcycle2.mixin.client;
 
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
+import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycleClient;
+import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -84,11 +86,12 @@ abstract class WorldRendererMixin {
 
 		assert this.world != null;
 
-		ZonedDateTime zonedDateTime = AccurateDayNightCycle.getTime();
+		ZonedDateTime zonedDateTime = AccurateDayNightCycleClient.getTime();
+		IpUtils.Geolocation geolocation = AccurateDayNightCycleClient.getGeolocation();
 		SunPosition sunPosition = SunPosition.compute()
 				.on(zonedDateTime)
 				.timezone(zonedDateTime.getZone())
-				.at(AccurateDayNightCycle.CONFIG.latitude(), AccurateDayNightCycle.CONFIG.longitude())
+				.at(geolocation.latitude(), geolocation.longitude())
 				.execute();
 
 
@@ -134,11 +137,12 @@ abstract class WorldRendererMixin {
 		matrixStack.pop(); // Removing our sun matrix from the stack
 		matrixStack.push(); // Pushing our new moon matrix
 
-		ZonedDateTime zonedDateTime = AccurateDayNightCycle.getTime();
+		ZonedDateTime zonedDateTime = AccurateDayNightCycleClient.getTime();
+		IpUtils.Geolocation geolocation = AccurateDayNightCycleClient.getGeolocation();
 		MoonPosition moonPosition = MoonPosition.compute()
 				.on(zonedDateTime)
 				.timezone(zonedDateTime.getZone())
-				.at(AccurateDayNightCycle.CONFIG.latitude(), AccurateDayNightCycle.CONFIG.longitude())
+				.at(geolocation.latitude(), geolocation.longitude())
 				.execute();
 
 		// We put it on the horizon (north)
