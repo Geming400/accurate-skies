@@ -55,7 +55,8 @@ abstract class WorldMixin {
         }
         this.iter = 0;
 
-        ZonedDateTime zonedDateTime = AccurateDayNightCycle.getTime();
+        // ZonedDateTime zonedDateTime = AccurateDayNightCycle.getTime();
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(2000, 2, 2, 12, 0, 0, 0, ZoneId.systemDefault());
         ZoneId zoneId = zonedDateTime.getZone();
 
         long mcMoonOffset = MoonPhases.getMcMoonPhaseOffset(zonedDateTime);
@@ -72,14 +73,13 @@ abstract class WorldMixin {
                 // 43200 = 24H/2
                 double timeFactor = (double) zonedDateTime.toLocalTime().toSecondOfDay() / sunTimes.getNoon().toLocalTime().toSecondOfDay();
                 mcTime = this.timeToMcTime((long) (timeFactor * 43200L));
-
-                //AccurateDaynightCycle.LOGGER.info(String.valueOf(mcTime));
             }
 
             this.lastTime = (mcTime + mcMoonOffset);
             cir.setReturnValue(this.lastTime);
         } else {
-            this.lastTime = this.timeToMcTime(zonedDateTime);
+            // We apply the offset to get the "sun time"
+            this.lastTime = this.timeToMcTime(zonedDateTime.minusSeconds(zonedDateTime.getOffset().getTotalSeconds()));
             cir.setReturnValue(this.lastTime + mcMoonOffset);
         }
     }
