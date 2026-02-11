@@ -6,8 +6,7 @@
 	"description": "Makes Minecraft's sky more accurate",
 	"authors": ["Geming400"],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Geming400/accurate-skies"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/accurate-day-night-cycle/icon.png",
@@ -31,6 +30,7 @@
 		"fabricloader": ">=0.18.4",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"owo": ">=0.12.15.4+1.21"
 	}
 }
