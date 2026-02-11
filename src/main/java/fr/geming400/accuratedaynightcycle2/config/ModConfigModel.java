@@ -16,7 +16,7 @@ public class ModConfigModel {
 
     @Hook
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
-    public boolean accurateCelestialBodies = false;
+    public boolean accurateCelestialBodies = true;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("checkTimezone")
