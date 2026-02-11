@@ -11,7 +11,6 @@ import java.time.ZoneOffset;
 @Config(name = "adnc-config", wrapperName = "ModConfig")
 @SuppressWarnings("unused")
 public class ModConfigModel {
-    @Hook
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean useGeolocalisation = false;
 

@@ -60,20 +60,9 @@ public class AccurateDayNightCycle implements ModInitializer {
 			}
 		});
 
-		if (!CONFIG.useGeolocalisation())
-			CONFIG.accurateCelestialBodies(false);
-
-		CONFIG.subscribeToUseGeolocalisation(value -> {
-			if (!value) // If we disable geo localisation
-				CONFIG.accurateCelestialBodies(false); // We also disable the 'accurateCelestialBodies' config
-		});
-
 		CONFIG.subscribeToAccurateCelestialBodies(value -> {
 			if (server != null)
 				IpUtils.Geolocation.fromConfig().updatePlayersGeolocation(server);
-
-			if (!CONFIG.useGeolocalisation())
-				CONFIG.accurateCelestialBodies(false);
 		});
 
 		if (CONFIG.ipAddress().equals(IP_ADDRESS_UNSET))
