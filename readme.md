@@ -1,6 +1,6 @@
 # Accurate Skies
 
-This simple mod turns the overworld's sky into a more one.
+This simple mod turns the overworld's sky into a more accurate one.
 
 > [!IMPORTANT]
 > This mod will turn Minecraft's default day-night cycle into a 24 hours cycle
