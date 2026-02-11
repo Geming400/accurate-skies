@@ -26,12 +26,12 @@ import java.time.ZonedDateTime;
 public class AccurateDayNightCycle implements ModInitializer {
 	public static final String MOD_ID = "accurate-day-night-cycle";
 
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final ModConfig CONFIG = ModConfig.createAndLoad();
+
 	public static final String IP_ADDRESS_UNSET = "DO NOT MODIFY - NOT SET";
 	public static final String MAXMIND_DB_LINK = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb";
 	public static final File MAXMIND_DB_PATH = FabricLoader.getInstance().getConfigDir().resolve("GeoLite-city.mmdb").toFile();
-
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final ModConfig CONFIG = ModConfig.createAndLoad();
 
 	@Override
 	public void onInitialize() {

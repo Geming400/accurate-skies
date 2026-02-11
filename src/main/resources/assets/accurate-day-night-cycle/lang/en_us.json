@@ -20,5 +20,5 @@
   "commands.acdn.disableGeolocalisation.error.alreadyDisabled": "Geo Localisation is already disabled.",
   "commands.acdn.disableGeolocalisation.success": "Geo Localisation successfully disabled !",
 
-  "acdn.warning.iris": "Warning: it seems like you are using iris. Most shaders won't work with the '%s' option."
+  "acdn.warning.iris": "Warning: it seems like you are using iris. Most shaders won't work with the \"%s\" option."
 }
