@@ -18,6 +18,7 @@ public class ModConfigModel {
     public boolean useGeolocalisation = true;
     @PredicateConstraint("checkTimezone")
     public String gmtTimeZone = "auto";
+    @PredicateConstraint("checkIfGeolocalisationEnabled")
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean accurateCelestialBodies = true;
 
@@ -39,5 +40,9 @@ public class ModConfigModel {
         } catch (DateTimeException e) {
             return false;
         }
+    }
+
+    public static boolean checkIfGeolocalisationEnabled(boolean accurateCelestialBodies) {
+        return AccurateDayNightCycle.CONFIG.useGeolocalisation();
     }
 }
