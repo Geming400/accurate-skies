@@ -59,7 +59,7 @@ public class AccurateDayNightCycleClient implements ClientModInitializer {
 		return geolocation == null ? IpUtils.Geolocation.fromConfig() : geolocation;
 	}
 	@NotNull
-	public static ZonedDateTime getTime() {
-		return zoneID == null ? AccurateDayNightCycle.getTime() : ZonedDateTime.now(zoneID);
+	public static ZoneId getZoneID() {
+		return zoneID == null ? ZoneId.systemDefault() : zoneID;
 	}
 }

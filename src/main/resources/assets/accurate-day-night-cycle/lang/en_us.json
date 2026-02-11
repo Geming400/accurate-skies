@@ -3,9 +3,6 @@
   "text.config.adnc-config.option.useGeolocalisation": "Use Geo Localisation",
   "text.config.adnc-config.option.useGeolocalisation.tooltip": "If Geo Localisation should get used.\nUse \"/acdn enable_geolocalisation\" to enable it, or restart your game",
 
-  "text.config.adnc-config.option.gmtTimeZone": "GMT Timezone",
-  "text.config.adnc-config.option.gmtTimeZone.tooltip": "The GMT Timezone. Leave to \"auto\" to use your system's timezone. Can be +1, -1, ...",
-
   "text.config.adnc-config.option.accurateCelestialBodies": "Accurate Celestial Bodies",
   "text.config.adnc-config.option.accurateCelestialBodies.tooltip": "If the sun and the moon are accurate on the clients.\nRequires Geo Localisation to be enabled.\nTHIS WILL SEND THE SERVER'S LOCATION TO THE CLIENTS !",
 

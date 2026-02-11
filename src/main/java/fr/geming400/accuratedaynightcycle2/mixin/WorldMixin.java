@@ -55,7 +55,7 @@ abstract class WorldMixin {
         }
         this.iter = 0;
 
-        ZonedDateTime zonedDateTime = AccurateDayNightCycle.getTime();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
         ZoneId zoneId = zonedDateTime.getZone();
 
         long mcMoonOffset = MoonPhases.getMcMoonPhaseOffset(zonedDateTime);

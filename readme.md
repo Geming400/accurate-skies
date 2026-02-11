@@ -37,7 +37,7 @@ You can enable geo localisation via 2 ways:
 > This setting requires the `Use Geo Localisation` setting to be enabled.
 
 > [!WARNING]
-> Once enabled, every player on a server will get receive the server's geolocalisation data and timezone.
+> Once enabled, every player on a server will get receive the server's geolocalisation.
 > But this is not possible to see unless using a modified version of this mod.
 
 Once enabled, you will be able to see the sun and the moon like they would in real life !

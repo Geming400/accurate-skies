@@ -87,11 +87,11 @@ abstract class WorldRendererMixin {
 
 		assert this.world != null;
 
-		ZonedDateTime zonedDateTime = AccurateDayNightCycleClient.getTime();
+		ZoneId zoneID = AccurateDayNightCycleClient.getZoneID();
 		IpUtils.Geolocation geolocation = AccurateDayNightCycleClient.getGeolocation();
 		SunPosition sunPosition = SunPosition.compute()
-				.on(zonedDateTime)
-				.timezone(zonedDateTime.getZone())
+				.on(ZonedDateTime.now(zoneID))
+				.timezone(zoneID)
 				.at(geolocation.latitude(), geolocation.longitude())
 				.execute();
 
@@ -138,11 +138,11 @@ abstract class WorldRendererMixin {
 		matrixStack.pop(); // Removing our sun matrix from the stack
 		matrixStack.push(); // Pushing our new moon matrix
 
-		ZonedDateTime zonedDateTime = AccurateDayNightCycleClient.getTime();
+		ZoneId zoneID = AccurateDayNightCycleClient.getZoneID();
 		IpUtils.Geolocation geolocation = AccurateDayNightCycleClient.getGeolocation();
 		MoonPosition moonPosition = MoonPosition.compute()
-				.on(zonedDateTime)
-				.timezone(zonedDateTime.getZone())
+				.on(ZonedDateTime.now(zoneID))
+				.timezone(zoneID)
 				.at(geolocation.latitude(), geolocation.longitude())
 				.execute();
 

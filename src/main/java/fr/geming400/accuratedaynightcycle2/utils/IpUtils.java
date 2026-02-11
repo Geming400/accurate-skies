@@ -19,6 +19,7 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.ZoneId;
 import java.util.Optional;
 
 public class IpUtils {
@@ -62,7 +63,7 @@ public class IpUtils {
 
         public void updatePlayerGeolocation(ServerPlayerEntity player) {
             ServerPlayNetworking.send(player, new GiveGeolocalisationS2CPayload(
-                    new GiveGeolocalisationS2CPayload.Data(this, AccurateDayNightCycle.getTime().getZone()))
+                    new GiveGeolocalisationS2CPayload.Data(this, ZoneId.systemDefault()))
             );
         }
 

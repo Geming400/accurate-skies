@@ -24,8 +24,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 public class AccurateDayNightCycle implements ModInitializer {
 	public static final String MOD_ID = "accurate-day-night-cycle";
@@ -67,19 +65,6 @@ public class AccurateDayNightCycle implements ModInitializer {
 
 		if (CONFIG.ipAddress().equals(IP_ADDRESS_UNSET))
 			loadOrCreateDb(false);
-	}
-
-	/// Checks if the {@linkplain fr.geming400.accuratedaynightcycle2.config.ModConfigModel#gmtTimeZone Mod Timezone} has been set to "auto" or not
-	public static boolean isTimeZoneAuto() {
-		return CONFIG.gmtTimeZone().equals("auto");
-	}
-
-	/// Gets the current time according to the {@link fr.geming400.accuratedaynightcycle2.config.ModConfigModel#gmtTimeZone} config
-	/// @see #isTimeZoneAuto()
-	public static ZonedDateTime getTime() {
-		return isTimeZoneAuto()
-				? ZonedDateTime.now()
-				: ZonedDateTime.now(ZoneOffset.of(AccurateDayNightCycle.CONFIG.gmtTimeZone()));
 	}
 
 	/**

@@ -18,10 +18,6 @@ public class ModConfigModel {
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean accurateCelestialBodies = true;
 
-    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
-    @PredicateConstraint("checkTimezone")
-    public String gmtTimeZone = "auto";
-
     // Internal stuff
 
     @ExcludeFromScreen
@@ -32,15 +28,4 @@ public class ModConfigModel {
 
     @ExcludeFromScreen
     public double longitude = 0;
-
-    public static boolean checkTimezone(String gmtTimeZone) {
-        if (gmtTimeZone.equals("auto")) return true;
-
-        try {
-            ZoneOffset.of(gmtTimeZone);
-            return true;
-        } catch (DateTimeException e) {
-            return false;
-        }
-    }
 }
