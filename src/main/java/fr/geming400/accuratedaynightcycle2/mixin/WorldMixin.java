@@ -33,6 +33,8 @@ abstract class WorldMixin {
     private long timeToMcTime(long time) {
         // This is the simplified formula
         // Original one that I found:
+        //
+        // 86400 = 43200*2 ticks
         // 24000 - ((time / 86400) * 24000 + 6000
         return -(5 * time)/18 + 18000;
     }
