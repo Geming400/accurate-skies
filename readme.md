@@ -46,6 +46,20 @@ Once enabled, you will be able to see the sun and the moon like they would in re
 ![Minecraft's sun position, but modified by the mod](./resources/accurateSun.png)
 ![Minecraft's moon position, but modified by the mod](./resources/accurateMoon.png)
 
+## What platforms this mod supports
+
+This mod can be used everywhere. Both on the client and server, or any of those. But:
+- Modded server, vanilla client: The `Accurate Celestial Bodies` setting won't work 
+but a day will **still take 24 hours**.
+- Vanilla server, modded client: A Minecraft day will now take 12 minutes, like it does normally
+but if you wish, you can still enable the `Accurate Celestial Bodies` setting. So the `Use Geo Localisation` setting
+won't work **on its own**.
+
 ## Credits
 
 A huge thanks to [Richard Körber](https://github.com/shred) and their [suncalc](https://github.com/shred/commons-suncalc) library for making this possible !
+
+## TODO:
+
+- [ ] Add packet to know if a client has the mod.
+  If no, send the English text instead of Text objects in command outputs
