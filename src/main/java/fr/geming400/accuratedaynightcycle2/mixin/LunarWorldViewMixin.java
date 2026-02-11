@@ -1,6 +1,5 @@
 package fr.geming400.accuratedaynightcycle2.mixin;
 
-import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
 import fr.geming400.accuratedaynightcycle2.moonphases.MoonPhases;
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Mixin;

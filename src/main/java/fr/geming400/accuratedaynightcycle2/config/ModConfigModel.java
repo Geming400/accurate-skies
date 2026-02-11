@@ -4,9 +4,6 @@ import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
 import io.wispforest.owo.config.Option;
 import io.wispforest.owo.config.annotation.*;
 
-import java.time.DateTimeException;
-import java.time.ZoneOffset;
-
 @Modmenu(modId = AccurateDayNightCycle.MOD_ID)
 @Config(name = "adnc-config", wrapperName = "ModConfig")
 @SuppressWarnings("unused")

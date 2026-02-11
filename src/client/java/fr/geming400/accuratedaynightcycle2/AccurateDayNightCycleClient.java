@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class AccurateDayNightCycleClient implements ClientModInitializer {
 	private static boolean warnAboutIris = false;
