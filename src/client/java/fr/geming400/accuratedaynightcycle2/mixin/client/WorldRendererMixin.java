@@ -22,6 +22,11 @@ abstract class WorldRendererMixin {
 	private ClientWorld world;
 
 	@Unique
+	private static final float MOON_TILT = 5.145f;
+	/// Number made up by me, but it's here just to stylize the sun
+	@Unique
+	private static final float SUN_TILT = -2.35f;
+	@Unique
 	private float i;
 
 	/**
@@ -100,6 +105,12 @@ abstract class WorldRendererMixin {
 				)
 		);
 
+		matrixStack.multiply(
+				RotationAxis.POSITIVE_Y.rotationDegrees(
+						SUN_TILT
+				)
+		);
+
 		if (i >= 360)
 			i = 0;
 		i += 0.2f;
@@ -131,9 +142,8 @@ abstract class WorldRendererMixin {
 				.execute();
 
 		// We put it on the horizon (north)
-//		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-		// matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
 
+		// We're using NEGATIVE_Y because getAzimuth() goes from north to east, while mc goes from north to west
 		matrixStack.multiply(
 				RotationAxis.NEGATIVE_Y.rotationDegrees(
 						(float) moonPosition.getAzimuth()
@@ -146,9 +156,11 @@ abstract class WorldRendererMixin {
 				)
 		);
 
-		// We apply the moon pos
-//		matrixStack.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(normalizeAzimuth((float) moonPosition.getAzimuth())));
-//		matrixStack.multiply(RotationAxis.NEGATIVE_X.rotationDegrees((float) moonPosition.getAltitude()));
+		matrixStack.multiply(
+				RotationAxis.POSITIVE_Y.rotationDegrees(
+						MOON_TILT
+				)
+		);
 
 		// mc will pop our matrix stack eventually, so no need to call "MatrixStack#pop()"
 		return matrixStack;
