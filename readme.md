@@ -40,4 +40,4 @@ Once enabled, you will be able to see the sun and the moon like they would in re
 
 ## Credits
 
-A huge thanks to [Richard Körber](https://github.com/shred) and their [suncalc](https://github.com/shred/commons-suncalc) for making this possible !
+A huge thanks to [Richard Körber](https://github.com/shred) and their [suncalc](https://github.com/shred/commons-suncalc) library for making this possible !
