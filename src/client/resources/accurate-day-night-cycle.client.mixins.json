@@ -4,10 +4,14 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "ClientPlayNetworkHandlerMixin",
+    "DimensionEffectsMixin",
     "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": []
+  "mixins": [],
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
 }

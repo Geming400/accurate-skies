@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-@Debug(export = true)
 @Mixin(WorldRenderer.class)
 abstract class WorldRendererMixin {
 	@Shadow
@@ -38,6 +37,31 @@ abstract class WorldRendererMixin {
 		return FabricLoader.getInstance().isModLoaded("sodium");
 	}
 
+	/// @see SunPosition#getAzimuth()
+	@Unique
+	private float lastSunAzimuth = 0f;
+	/// @see SunPosition#getAzimuth()
+	@Unique
+	private float lastSunAltitude = 0f;
+
+	@Unique
+    private boolean isActivated() {
+		if (this.world != null && !Utils.checkDimension(this.world, Identifier.ofVanilla("overworld"))) return false;
+		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return false;
+		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return false;
+        return isSodiumInstalled();
+    }
+
+	/**
+	 * Normalizes the azimuth of suncalc into Minecraft's cardinal system
+	 * @param azimuth the sun's azimuth
+	 * @return the new azimuth
+	 * @see SunPosition#getAzimuth()
+	 */
+	@Unique
+	private static float normalizeAzimuth(double azimuth) {
+		return (float) azimuth + 180;
+	}
 	/**
 	 * Normalizes the altitude of suncalc into Minecraft's coordinate system
 	 * @param sunPos the sun's position
@@ -61,6 +85,65 @@ abstract class WorldRendererMixin {
 		return (float) (moonPos.getAltitude() + 90);
 	}
 
+
+	// --- SKY ---
+
+
+	@ModifyVariable(
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/client/gl/VertexBuffer;bind()V",
+					shift = At.Shift.BEFORE,
+					ordinal = 0
+			),
+			method = "renderSky"
+	)
+	private MatrixStack renderLightSky$begin(MatrixStack matrixStack) {
+		if (!isActivated()) return matrixStack;
+
+		matrixStack.push(); // Pushing a new matrix so the game doesn't crash when we will
+							// pop the old light sky matrix
+		return matrixStack;
+	}
+	@ModifyVariable(
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionf;)V",
+					ordinal = 2
+			),
+			method = "renderSky"
+	)
+	private MatrixStack renderLightSky$onRender(MatrixStack matrixStack) {
+		if (!isActivated()) return matrixStack;
+
+		matrixStack.pop(); // Removing the old sky matrix
+		matrixStack.push(); // Pushing our new sky matrix
+
+		// Minecraft's transformation
+		matrixStack.multiply(
+				RotationAxis.POSITIVE_X.rotationDegrees(
+						90
+				)
+		);
+
+		matrixStack.multiply(
+				RotationAxis.POSITIVE_Z.rotationDegrees(
+						this.lastSunAzimuth - 90
+				)
+		);
+		matrixStack.multiply(
+				RotationAxis.NEGATIVE_Y.rotationDegrees(
+						(this.lastSunAltitude + 18) * 1.1f
+				)
+		);
+
+		return matrixStack;
+	}
+
+
+	// --- CELESTIAL BODIES ---
+
+
 	@ModifyVariable(
 			at = @At(
 					value = "INVOKE",
@@ -71,10 +154,9 @@ abstract class WorldRendererMixin {
 			method = "renderSky"
 	)
 	private MatrixStack renderSun(MatrixStack matrixStack) {
-		if (this.world != null && !Utils.checkDimension(this.world, Identifier.ofVanilla("overworld"))) return matrixStack;
-		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return matrixStack;
-		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return matrixStack;
-		if (!isSodiumInstalled()) return matrixStack;
+		matrixStack.pop(); // Removing our custom sky matrix
+
+		if (!this.isActivated()) return matrixStack;
 
 		matrixStack.pop(); // Removing mc's sun matrix from the stack
 		matrixStack.push(); // Pushing our own matrix instead
@@ -93,15 +175,17 @@ abstract class WorldRendererMixin {
 		// We're using NEGATIVE_Y because getAzimuth() goes from north to east, while mc goes from north to west
 		matrixStack.multiply(
 				RotationAxis.NEGATIVE_Y.rotationDegrees(
-						(float) sunPosition.getAzimuth()
+						normalizeAzimuth(sunPosition.getAzimuth())
 				)
 		);
+		this.lastSunAzimuth = (float) sunPosition.getAzimuth();
 
 		matrixStack.multiply(
 				RotationAxis.POSITIVE_X.rotationDegrees(
 						normalizeAltitude(sunPosition)
 				)
 		);
+		this.lastSunAltitude = (float) sunPosition.getAltitude();
 
 		matrixStack.multiply(
 				RotationAxis.POSITIVE_Y.rotationDegrees(
@@ -122,10 +206,7 @@ abstract class WorldRendererMixin {
 			method = "renderSky"
 	)
 	private MatrixStack renderMoon(MatrixStack matrixStack) {
-		if (this.world != null && !Utils.checkDimension(this.world, Identifier.ofVanilla("overworld"))) return matrixStack;
-		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return matrixStack;
-		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return matrixStack;
-		if (!isSodiumInstalled()) return matrixStack;
+		if (!isActivated()) return matrixStack;
 
 		matrixStack.pop(); // Removing our sun matrix from the stack
 		matrixStack.push(); // Pushing our new moon matrix

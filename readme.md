@@ -64,4 +64,4 @@ A huge thanks to [Richard Körber](https://github.com/shred) and their [suncalc]
 - [x] Add packet to know if a client has the mod.
   If no, send the English text instead of Text objects in command outputs
   (This led to the worst code in existence, please help)
-- [ ] Fix sky gradient being not titled like the sun is
+- [x] Fix sky gradient being not titled like the sun is
