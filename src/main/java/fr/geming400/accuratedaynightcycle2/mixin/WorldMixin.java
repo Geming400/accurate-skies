@@ -2,20 +2,27 @@ package fr.geming400.accuratedaynightcycle2.mixin;
 
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
 import fr.geming400.accuratedaynightcycle2.moonphases.MoonPhases;
+import fr.geming400.accuratedaynightcycle2.utils.Utils;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import org.shredzone.commons.suncalc.SunPosition;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Mixin(World.class)
 abstract class WorldMixin {
+    @Shadow
+    public abstract RegistryEntry<DimensionType> getDimensionEntry();
+
     @Unique
     private static final int TICKS_BEFORE_COMPUTING = 20;
 
@@ -29,33 +36,18 @@ abstract class WorldMixin {
     @Unique
     private long lastTime = 0;
 
-    @Unique
-    private static long timeToMcTime(long time) {
-        // This is the simplified formula
-        // Original one that I found:
-        //
-        // 86400 = 1 real day
-        // 24000 - ((time / 86400) * 24000 + 6000
-        return -(5 * time)/18 + 18000;
-    }
-    @Unique
-    private static long timeToMcTime(LocalTime time) {
-        return timeToMcTime(time.toSecondOfDay());
-    }
-    @Unique
-    private static long timeToMcTime(ZonedDateTime time) {
-        return timeToMcTime(time.toLocalTime());
-    }
-
     @Inject(at = @At("HEAD"), method = "getTimeOfDay", cancellable = true)
     public void getTimeOfDay(CallbackInfoReturnable<Long> cir) {
+        if (!Utils.checkDimension((World) (Object) this, Identifier.ofVanilla("overworld")))
+            return;
+
         if (this.iter < TICKS_BEFORE_COMPUTING) {
             this.iter++;
             cir.setReturnValue(this.lastTime);
         }
         this.iter = 0;
 
-        ZonedDateTime zonedDateTime = ZonedDateTime.now().plusSeconds(iter);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
         ZoneId zoneId = zonedDateTime.getZone();
 
         long mcMoonOffset = MoonPhases.getMcMoonPhaseOffset(zonedDateTime);
@@ -73,7 +65,7 @@ abstract class WorldMixin {
             cir.setReturnValue(this.lastTime);
         } else {
             // We apply the offset to get the "sun time"
-            this.lastTime = timeToMcTime(zonedDateTime.minusSeconds(zonedDateTime.getOffset().getTotalSeconds()));
+            this.lastTime = Utils.timeToMcTime(zonedDateTime.minusSeconds(zonedDateTime.getOffset().getTotalSeconds()));
 
             cir.setReturnValue(this.lastTime + mcMoonOffset);
         }

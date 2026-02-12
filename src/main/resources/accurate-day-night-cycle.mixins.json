@@ -3,7 +3,7 @@
   "package": "fr.geming400.accuratedaynightcycle2.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LunarWorldViewMixin",
+    "DimensionTypeMixin",
     "WorldMixin"
   ],
   "injectors": {

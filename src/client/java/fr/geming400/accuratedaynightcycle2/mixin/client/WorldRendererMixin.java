@@ -3,10 +3,12 @@ package fr.geming400.accuratedaynightcycle2.mixin.client;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycleClient;
 import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
+import fr.geming400.accuratedaynightcycle2.utils.Utils;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.jetbrains.annotations.Nullable;
 import org.shredzone.commons.suncalc.MoonPosition;
@@ -69,6 +71,7 @@ abstract class WorldRendererMixin {
 			method = "renderSky"
 	)
 	private MatrixStack renderSun(MatrixStack matrixStack) {
+		if (this.world != null && !Utils.checkDimension(this.world, Identifier.ofVanilla("overworld"))) return matrixStack;
 		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return matrixStack;
 		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return matrixStack;
 		if (!isSodiumInstalled()) return matrixStack;
@@ -119,6 +122,7 @@ abstract class WorldRendererMixin {
 			method = "renderSky"
 	)
 	private MatrixStack renderMoon(MatrixStack matrixStack) {
+		if (this.world != null && !Utils.checkDimension(this.world, Identifier.ofVanilla("overworld"))) return matrixStack;
 		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return matrixStack;
 		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return matrixStack;
 		if (!isSodiumInstalled()) return matrixStack;
