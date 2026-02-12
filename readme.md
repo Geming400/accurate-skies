@@ -29,12 +29,12 @@ and enable the `Accurate Celestial Bodies` setting.
 You can enable geo localisation via 2 ways:
 - The `/adnc enable_geolocalisation` command
 - In this mod's configs:
-![The "Enable Geo Localisation" setting in the config ui](./resources/enableGeolocalisationSetting.png)
+![The "Use Geo Localisation" setting in the config ui](./resources/enableGeolocalisationSetting.png)
 
 ## Accurate Celestial Bodies
 
 > [!NOTE]
-> This setting requires the `Use Geo Localisation` setting to be enabled.
+> This setting requires the `Use Geo Localisation` setting to be enabled **and [sodium](https://modrinth.com/mod/sodium)**.
 
 > [!WARNING]
 > Once enabled, every player on a server will get receive the server's geolocalisation.

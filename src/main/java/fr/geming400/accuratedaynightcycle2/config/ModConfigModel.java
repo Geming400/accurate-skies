@@ -18,6 +18,9 @@ public class ModConfigModel {
     // Internal stuff
 
     @ExcludeFromScreen
+    public boolean shownSodiumWarning = false;
+
+    @ExcludeFromScreen
     public String ipAddress = AccurateDayNightCycle.IP_ADDRESS_UNSET;
 
     @ExcludeFromScreen

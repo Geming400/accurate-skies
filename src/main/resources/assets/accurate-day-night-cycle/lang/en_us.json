@@ -11,12 +11,13 @@
   "commands.acdn.updateDb.error.notEnabled": "Geo Localisation is not enabled. You can enable it by clicking %s",
   "commands.acdn.updateDb.success": "Update db and server's Geolocalisation !",
   "commands.acdn.enableGeolocalisation.error.alreadyEnabled": "Geolocalisation is already enabled. You can disable it by clicking %s",
-  "commands.acdn.enableGeolocalisation.confirm": "Do you want to enable Geo Localisation ? Note:\n- IP Geo Localisation is done on your device\n- Your IP gets fetched through 'https://api.ipify.org'\n\nTo confirm, click %s",
+  "commands.acdn.enableGeolocalisation.confirm": "Do you want to enable Geo Localisation ? Note:\n- IP Geo Localisation is done on your device\n- Your IP gets fetched through 'https://api.ipify.org'\n- The found location is very inaccurate\n\nTo confirm, click %s",
   "commands.acdn.enableGeolocalisation.confirm.updatingDb": "Updating db...",
   "commands.acdn.enableGeolocalisation.confirm.success": "Successfully enabled Geo Localisation !",
 
   "commands.acdn.disableGeolocalisation.error.alreadyDisabled": "Geo Localisation is already disabled.",
   "commands.acdn.disableGeolocalisation.success": "Geo Localisation successfully disabled !",
 
-  "acdn.warning.iris": "Accurate Skies warning: it seems like you are using iris. Most shaders won't work with the \"%s\" option."
+  "acdn.warning.iris": "Accurate Skies warning: it seems like you are using iris. Most shaders won't work with the \"%s\" option.",
+  "acdn.warning.sodium": "Accurate Skies warning: sodium is required for the \"%s\" option. This won't appear again."
 }

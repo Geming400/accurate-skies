@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class ClientPlayNetworkHandlerMixin {
     @Inject(at = @At("TAIL"), method = "onGameJoin")
     private void onGameJoin(GameJoinS2CPacket packet, CallbackInfo ci) {
+        AccurateDayNightCycleClient.warnAboutSodium();
         AccurateDayNightCycleClient.warnAboutIris();
     }
 }

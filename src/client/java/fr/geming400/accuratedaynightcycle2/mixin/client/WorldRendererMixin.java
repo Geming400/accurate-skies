@@ -3,6 +3,7 @@ package fr.geming400.accuratedaynightcycle2.mixin.client;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycleClient;
 import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -29,23 +30,12 @@ abstract class WorldRendererMixin {
 	/// Number made up by me, but it's here just to stylize the sun
 	@Unique
 	private static final float SUN_TILT = -2.35f;
-	@Unique
-	private float i;
 
-	/**
-	 * Normalizes the azimuth of suncalc into Minecraft's cardinal system
-	 * @param azimuth the sun's azimuth
-	 * @return the new azimuth
-	 * @see SunPosition#getAzimuth()
-	 */
 	@Unique
-	private static float normalizeAzimuth(double azimuth) {
-		double newAzimuth = azimuth + 180; // For mc, 180° is north, and so 0° is south
-		if (newAzimuth > 360)
-			newAzimuth = newAzimuth - 360;
-
-		return (float) newAzimuth;
+	private static boolean isSodiumInstalled() {
+		return FabricLoader.getInstance().isModLoaded("sodium");
 	}
+
 	/**
 	 * Normalizes the altitude of suncalc into Minecraft's coordinate system
 	 * @param sunPos the sun's position
@@ -81,6 +71,7 @@ abstract class WorldRendererMixin {
 	private MatrixStack renderSun(MatrixStack matrixStack) {
 		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return matrixStack;
 		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return matrixStack;
+		if (!isSodiumInstalled()) return matrixStack;
 
 		matrixStack.pop(); // Removing mc's sun matrix from the stack
 		matrixStack.push(); // Pushing our own matrix instead
@@ -115,10 +106,6 @@ abstract class WorldRendererMixin {
 				)
 		);
 
-		if (i >= 360)
-			i = 0;
-		i += 0.2f;
-
 		// we will pop our matrix stack later (see next mixin)
 		return matrixStack;
 	}
@@ -134,6 +121,7 @@ abstract class WorldRendererMixin {
 	private MatrixStack renderMoon(MatrixStack matrixStack) {
 		if (!AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) return matrixStack;
 		if (!AccurateDayNightCycle.CONFIG.useGeolocalisation()) return matrixStack;
+		if (!isSodiumInstalled()) return matrixStack;
 
 		matrixStack.pop(); // Removing our sun matrix from the stack
 		matrixStack.push(); // Pushing our new moon matrix

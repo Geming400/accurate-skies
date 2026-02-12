@@ -16,6 +16,8 @@ import java.time.ZoneId;
 
 public class AccurateDayNightCycleClient implements ClientModInitializer {
 	private static boolean warnAboutIris = false;
+	private static boolean warnAboutSodium = false;
+
 	@Nullable
 	public static IpUtils.Geolocation geolocation = null;
 	@Nullable
@@ -24,9 +26,27 @@ public class AccurateDayNightCycleClient implements ClientModInitializer {
 	public static void warnAboutIris() {
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;
 		if (player == null) return;
-		if (warnAboutIris || AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) {
+		if (
+				warnAboutIris
+				|| AccurateDayNightCycle.CONFIG.accurateCelestialBodies()
+				&& FabricLoader.getInstance().isModLoaded("iris")
+		) {
 			warnAboutIris = false;
 			player.sendMessage(Text.translatable("acdn.warning.iris", Text.translatable("text.config.adnc-config.option.accurateCelestialBodies")).formatted(Formatting.GOLD));
+		}
+	}
+	public static void warnAboutSodium() {
+		ClientPlayerEntity player = MinecraftClient.getInstance().player;
+		if (player == null) return;
+		if (
+				!AccurateDayNightCycle.CONFIG.shownSodiumWarning()
+				&& AccurateDayNightCycle.CONFIG.accurateCelestialBodies()
+				&& !FabricLoader.getInstance().isModLoaded("sodium")
+				|| warnAboutSodium
+		) {
+			warnAboutSodium = false;
+			AccurateDayNightCycle.CONFIG.shownSodiumWarning(true);
+			player.sendMessage(Text.translatable("acdn.warning.sodium", Text.translatable("text.config.adnc-config.option.accurateCelestialBodies")).formatted(Formatting.RED));
 		}
 	}
 
@@ -40,6 +60,10 @@ public class AccurateDayNightCycleClient implements ClientModInitializer {
 				warnAboutIris = true;
 				if (player != null)
 					warnAboutIris();
+			} else if (!AccurateDayNightCycle.CONFIG.shownSodiumWarning() && !FabricLoader.getInstance().isModLoaded("sodium") && value == true) {
+				warnAboutSodium = true;
+				if (player != null)
+					warnAboutSodium();
 			}
 		});
 
