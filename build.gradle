@@ -18,7 +18,7 @@ repositories {
 	// for more information about repositories.
 
 	maven { url 'https://maven.wispforest.io/releases/' }
-	mavenCentral() // For GeoIP2
+	mavenCentral()
 }
 
 loom {
@@ -53,8 +53,8 @@ dependencies {
 
 	annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
 
-	include implementation("org.shredzone.commons:commons-suncalc:3.11")
-	include implementation("com.maxmind.geoip2:geoip2:5.0.2")
+	include implementation("org.shredzone.commons:commons-suncalc:${project.suncalc_version}")
+	include implementation("com.maxmind.geoip2:geoip2:${project.geo2ip_version}")
 }
 
 processResources {
