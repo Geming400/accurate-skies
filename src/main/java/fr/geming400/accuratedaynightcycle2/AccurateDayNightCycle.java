@@ -4,11 +4,10 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import fr.geming400.accuratedaynightcycle2.commands.ModCommands;
 import fr.geming400.accuratedaynightcycle2.config.ModConfig;
 import fr.geming400.accuratedaynightcycle2.networking.ModNetworking;
+import fr.geming400.accuratedaynightcycle2.networking.ServerReceiver;
 import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +24,9 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class AccurateDayNightCycle implements ModInitializer {
 	public static final String MOD_ID = "accurate-day-night-cycle";
@@ -36,33 +38,18 @@ public class AccurateDayNightCycle implements ModInitializer {
 	public static final String MAXMIND_DB_LINK = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb";
 	public static final File MAXMIND_DB_PATH = FabricLoader.getInstance().getConfigDir().resolve("GeoLite-city.mmdb").toFile();
 
+	/// A {@link Set} of everyone on the current server who has this mod
+	public static Set<UUID> playersWithMod = new HashSet<>();
+
 	@Nullable
-	private static MinecraftServer server = null;
+    static MinecraftServer server = null;
 
 	@Override
 	public void onInitialize() {
 		ModCommands.initialize();
 		ModNetworking.initialize();
-
-		ServerLifecycleEvents.SERVER_STARTED.register(mcServer -> {
-			server = mcServer;
-			loadOrCreateDb(false);
-		});
-		ServerLifecycleEvents.SERVER_STOPPED.register(mcServer ->
-				server = null
-		);
-
-		ServerPlayerEvents.JOIN.register(player -> {
-			if (CONFIG.accurateCelestialBodies()) {
-				LOGGER.info("Sending geolocation infos to player {}", player.getName().getString());
-				IpUtils.Geolocation.fromConfig().updatePlayerGeolocation(player);
-			}
-		});
-
-		CONFIG.subscribeToAccurateCelestialBodies(value -> {
-			if (server != null)
-				IpUtils.Geolocation.fromConfig().updatePlayersGeolocation(server);
-		});
+		ServerReceiver.initialize();
+		ServerEvents.initialize();
 
 		if (CONFIG.ipAddress().equals(IP_ADDRESS_UNSET))
 			loadOrCreateDb(false);

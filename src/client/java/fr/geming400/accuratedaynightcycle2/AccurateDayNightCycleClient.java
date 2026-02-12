@@ -1,6 +1,6 @@
 package fr.geming400.accuratedaynightcycle2;
 
-import fr.geming400.accuratedaynightcycle2.networking.Receiver;
+import fr.geming400.accuratedaynightcycle2.networking.ClientReceiver;
 import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -52,7 +52,7 @@ public class AccurateDayNightCycleClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		Receiver.initialize();
+		ClientReceiver.initialize();
 
 		AccurateDayNightCycle.CONFIG.subscribeToAccurateCelestialBodies((value) -> {
 			ClientPlayerEntity player = MinecraftClient.getInstance().player;

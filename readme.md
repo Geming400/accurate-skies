@@ -61,5 +61,6 @@ A huge thanks to [Richard Körber](https://github.com/shred) and their [suncalc]
 
 ## TODO:
 
-- [ ] Add packet to know if a client has the mod.
+- [x] Add packet to know if a client has the mod.
   If no, send the English text instead of Text objects in command outputs
+  (This led to the worst code in existence, please help)
