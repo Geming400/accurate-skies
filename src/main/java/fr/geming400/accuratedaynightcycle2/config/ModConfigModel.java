@@ -21,7 +21,7 @@ public class ModConfigModel {
     public boolean shownSodiumWarning = false;
 
     @ExcludeFromScreen
-    public String ipAddress = AccurateDayNightCycle.IP_ADDRESS_UNSET;
+    public String ipAddress = "";
 
     @ExcludeFromScreen
     public double latitude = 0;

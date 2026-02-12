@@ -1,5 +1,6 @@
 package fr.geming400.accuratedaynightcycle2;
 
+import com.google.common.net.InetAddresses;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import fr.geming400.accuratedaynightcycle2.commands.ModCommands;
 import fr.geming400.accuratedaynightcycle2.config.ModConfig;
@@ -34,7 +35,6 @@ public class AccurateDayNightCycle implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final ModConfig CONFIG = ModConfig.createAndLoad();
 
-	public static final String IP_ADDRESS_UNSET = "DO NOT MODIFY - NOT SET";
 	public static final String MAXMIND_DB_LINK = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb";
 	public static final File MAXMIND_DB_PATH = FabricLoader.getInstance().getConfigDir().resolve("GeoLite-city.mmdb").toFile();
 
@@ -51,7 +51,7 @@ public class AccurateDayNightCycle implements ModInitializer {
 		ServerReceiver.initialize();
 		ServerEvents.initialize();
 
-		if (CONFIG.ipAddress().equals(IP_ADDRESS_UNSET))
+		if (!InetAddresses.isInetAddress(CONFIG.ipAddress()))
 			loadOrCreateDb(false);
 	}
 

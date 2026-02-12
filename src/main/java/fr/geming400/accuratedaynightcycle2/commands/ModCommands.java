@@ -104,7 +104,7 @@ public final class ModCommands {
         } else {
             AccurateDayNightCycle.CONFIG.useGeolocalisation(false);
             if (removeData) {
-                AccurateDayNightCycle.CONFIG.ipAddress(AccurateDayNightCycle.IP_ADDRESS_UNSET);
+                AccurateDayNightCycle.CONFIG.ipAddress("");
                 AccurateDayNightCycle.CONFIG.latitude(0);
                 AccurateDayNightCycle.CONFIG.longitude(0);
             }
