@@ -24,6 +24,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 
 public class AccurateDayNightCycle implements ModInitializer {
 	public static final String MOD_ID = "accurate-day-night-cycle";
@@ -77,10 +78,6 @@ public class AccurateDayNightCycle implements ModInitializer {
 			LOGGER.info("Loading or creating MaxMind db (forceUpdate = {})", forceUpdate);
 
 			try {
-				InetAddress ip = IpUtils.getPublicIp();
-
-				CONFIG.ipAddress(ip.toString());
-
 				if (!Files.exists(MAXMIND_DB_PATH.toPath()) || forceUpdate) {
 					if (forceUpdate && Files.exists(MAXMIND_DB_PATH.toPath())) {
 						LOGGER.info("Deleting MaxMind db (at {}) because we are force updating it", MAXMIND_DB_PATH);
@@ -95,6 +92,7 @@ public class AccurateDayNightCycle implements ModInitializer {
 					) {
 						HttpRequest request = HttpRequest.newBuilder()
 								.uri(URI.create(MAXMIND_DB_LINK))
+								.timeout(Duration.ofSeconds(3))
 								.GET()
 								.build();
 
@@ -107,11 +105,14 @@ public class AccurateDayNightCycle implements ModInitializer {
 						Files.createFile(MAXMIND_DB_PATH.toPath());
 						Files.write(MAXMIND_DB_PATH.toPath(), response.body(), StandardOpenOption.WRITE);
 
+						InetAddress ip = IpUtils.getPublicIp();
 						IpUtils.Geolocation geolocation = IpUtils.getCoordinatesFromIp(ip, MAXMIND_DB_PATH);
 
 						// Setting the new latitude and longitude in the config
 						CONFIG.latitude(geolocation.latitude());
 						CONFIG.longitude(geolocation.longitude());
+
+						CONFIG.ipAddress(ip.toString());
 
 						return geolocation;
 					} catch (IOException | InterruptedException e) {
