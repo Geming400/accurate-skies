@@ -8,6 +8,7 @@
 
 
   "commands.acdn.clickHere": "[HERE]",
+  "commands.acdn.rejoin": "You must rejoin this server to see the changes get applied",
   "commands.acdn.updateDb.error.notEnabled": "Geo Localisation is not enabled. You can enable it by clicking %s",
   "commands.acdn.updateDb.success": "Update db and server's Geolocalisation !",
   "commands.acdn.enableGeolocalisation.error.alreadyEnabled": "Geolocalisation is already enabled. You can disable it by clicking %s",

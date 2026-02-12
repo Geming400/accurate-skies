@@ -6,7 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.geming400.accuratedaynightcycle2.AccurateDayNightCycle;
 import fr.geming400.accuratedaynightcycle2.utils.IpUtils;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -109,8 +111,11 @@ public final class ModCommands {
                 AccurateDayNightCycle.CONFIG.longitude(0);
             }
 
+            Text rejoinText = safeText(context, "commands.acdn.rejoin").formatted(Formatting.GRAY, Formatting.ITALIC);
             Text toSend = safeText(context, "commands.acdn.disableGeolocalisation.success").formatted(Formatting.GREEN);
             context.getSource().sendFeedback(() -> toSend, true);
+            if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
+                context.getSource().sendFeedback(() -> rejoinText, false);
         }
 
         return Command.SINGLE_SUCCESS;
@@ -125,8 +130,15 @@ public final class ModCommands {
             AccurateDayNightCycle.CONFIG.useGeolocalisation(true);
             AccurateDayNightCycle.loadOrCreateDb(false);
 
+            if (AccurateDayNightCycle.CONFIG.accurateCelestialBodies()) {
+                IpUtils.Geolocation.fromConfig().updatePlayerGeolocation(context.getSource().getPlayerOrThrow());
+            }
+
+            Text rejoinText = safeText(context, "commands.acdn.rejoin").formatted(Formatting.GRAY, Formatting.ITALIC);
             Text toSend = safeText(context, "commands.acdn.enableGeolocalisation.confirm.success").formatted(Formatting.GREEN);
             context.getSource().sendFeedback(() -> toSend, true);
+            if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
+                context.getSource().sendFeedback(() -> rejoinText, false);
         }
 
         return Command.SINGLE_SUCCESS;
