@@ -118,7 +118,7 @@ abstract class WorldRendererMixin {
 
 		matrixStack.multiply(
 				RotationAxis.POSITIVE_Z.rotationDegrees(
-						this.lastSunAzimuth - 90
+						this.lastSunAzimuth + 90
 				)
 		);
 		matrixStack.multiply(
