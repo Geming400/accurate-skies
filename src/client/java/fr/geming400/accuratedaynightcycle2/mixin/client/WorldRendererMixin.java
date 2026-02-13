@@ -53,16 +53,6 @@ abstract class WorldRendererMixin {
     }
 
 	/**
-	 * Normalizes the azimuth of suncalc into Minecraft's cardinal system
-	 * @param azimuth the sun's azimuth
-	 * @return the new azimuth
-	 * @see SunPosition#getAzimuth()
-	 */
-	@Unique
-	private static float normalizeAzimuth(double azimuth) {
-		return (float) azimuth + 180;
-	}
-	/**
 	 * Normalizes the altitude of suncalc into Minecraft's coordinate system
 	 * @param sunPos the sun's position
 	 * @return the new azimuth
@@ -175,7 +165,7 @@ abstract class WorldRendererMixin {
 		// We're using NEGATIVE_Y because getAzimuth() goes from north to east, while mc goes from north to west
 		matrixStack.multiply(
 				RotationAxis.NEGATIVE_Y.rotationDegrees(
-						normalizeAzimuth(sunPosition.getAzimuth())
+						(float) sunPosition.getAzimuth()
 				)
 		);
 		this.lastSunAzimuth = (float) sunPosition.getAzimuth();
